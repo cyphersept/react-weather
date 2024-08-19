@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { APIs, compileInfo } from "./Weather.js";
+import { APIs, Utils } from "./Weather.js";
 import bg from "./assets/neon-bg-hd.webp";
 import bg4k from "./assets/neon-bg-4k.webp";
 import "./index.css";
@@ -9,7 +7,7 @@ import "./index.css";
 function App() {
   const [data, setData] = useState(null);
   const [geo, setGeo] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("Seoul");
 
   const handleInputChange = (value) => {
     setInputValue(value);
@@ -20,52 +18,67 @@ function App() {
       const geoResult = await APIs().requestGeo(inputValue);
       const weatherData = await APIs().requestWeather({
         latitude: geoResult.latitude,
-        longitude: geoResult.longitude
+        longitude: geoResult.longitude,
       });
       setGeo(geoResult);
       setData(weatherData);
     } catch (error) {
-      console.error('Failed to find location: ', error)
+      console.error("Failed to find location: ", error);
     }
-  }
+  };
+
+  useEffect(() => {
+    onSearch();
+  }, []);
 
   return (
     <>
       <Bg></Bg>
       <Search
         onInputChange={handleInputChange}
-        onSearch={onSearch}></Search>
-
-      <div className="card">
-        <button
-          onClick={async () => {
-            try {
-              const data = await APIs().requestWeather(weatherUrl);
-              setData(data);
-            } catch (error) {
-              console.error('Failed to find location: ', error)
-            }
-          }}
-        >
-          count is {count}
-        </button>
-      </div>
+        onSearch={onSearch}
+        inputValue={inputValue}
+        geoData={geo}
+      ></Search>
+      <button
+        onClick={async () => {
+          try {
+            const data = await APIs().requestGeo(inputValue);
+            setData(data);
+          } catch (error) {
+            console.error("Failed to find location: ", error);
+          }
+        }}
+      >
+        count
+      </button>
+      <Current data={data} />
     </>
   );
 }
 
 function Current({ data }) {
-  const obj = compileInfo(data.current, data.current_units);
+  if (!data) return <div>Loading...</div>;
+  let obj = Utils().compileInfo(data.current, data.current_units);
   return (
-    <div className="current">
-      <div className="time"></div>
-      <i className={obj.interpreted_code.icon}></i>
-      <div className="desc">{obj.interpreted_code.description}</div>
-      <div className="temp">{obj.temperature_2m}°</div>
-      <div className="humidity">{obj.relative_humidity_2m}%</div>
-      <div className="feels-like">Feels like: {obj.apparent_temperature}°</div>
-      <div className="precipitation">{obj.precipitation}</div>
-      <div className="wind">
+    <div className="current uppercase">
+      <div className="time uppercase">
+        {obj.time.split("T").reverse().join(" ")}
+      </div>
+      <i className={obj.interpreted_code.icon + " uppercase"}></i>
+      <div className="desc uppercase">{obj.interpreted_code.description}</div>
+      <div className="temp uppercase">{obj.temperature_2m}°</div>
+      <div className="humidity uppercase">
+        Humidity: {obj.relative_humidity_2m}
+      </div>
+      <div className="feels uppercase-like">
+        Feels like: {obj.apparent_temperature}°
+      </div>
+      <div className="precipitation uppercase">
+        Precipitation: {obj.precipitation}
+      </div>
+      <div className="wind uppercase">
+        Wind:&nbsp;
         {obj.wind_speed_10m + " " + obj.wind_direction_10m}
       </div>
     </div>
@@ -75,18 +88,20 @@ function Current({ data }) {
 function Weekly({ weeklyData }) {
   return (
     <div className="flex gap-2">
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
-      <Day day={dayData}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
+      <Day data={data} index={index}></Day>
     </div>
   );
 }
 
-function Day({ dayData }) {
+function Day({ data, index }) {
+  if (!data) return <div>Loading...</div>;
+  let obj = Utils().compileInfo(data.weekly[index], data.weekly_units);
   return (
     <div className="flex flex-col justify-center items-center ">
       <div className="day"></div>
@@ -101,21 +116,17 @@ function Day({ dayData }) {
   );
 }
 
-function Search({onInputChange, onSearch}) {
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const geoResponse = await APIs().requestGeo(inputValue);
-      setGeo(geoResponse);
-    };
-
+function Search({ onInputChange, onSearch, inputValue, geoData }) {
   return (
     <>
       <label
         htmlFor="lookupGeocode"
         className="font-bold text-4xl text-white text-shadow shadow-white "
       >
-        LOCATION:
+        LOCATION:{" "}
+        {geoData
+          ? geoData.name.concat(", ", geoData.country).toUpperCase()
+          : "LOADING..."}
       </label>
 
       <input
@@ -126,10 +137,7 @@ function Search({onInputChange, onSearch}) {
         onChange={(event) => onInputChange(event.target.value)}
         className="h-12 p-4 rounded-sm w-3/4 max-w-96 text-xl "
       />
-      <SvgButton
-        onclick={onSearch}
-        text="SEARCH"
-      ></SvgButton>
+      <SvgButton onclick={onSearch} text="SEARCH"></SvgButton>
     </>
   );
 }
@@ -324,8 +332,5 @@ function SvgButton({ text }) {
     </div>
   );
 }
-
-function Hourly() {}
-function Hour({ data }) {}
 
 export default App;
