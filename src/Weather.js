@@ -45,7 +45,7 @@ function APIs() {
 
 function Utils() {
   function interpretCode(code, isDay) {
-    const dayOrNight = isDay === 1 ? "day" : "night";
+    const dayOrNight = isDay === 0 ? "night" : "day";
     const codeInfo = weatherCodes[code][dayOrNight];
     console.log(codeInfo);
     return codeInfo;
@@ -60,11 +60,38 @@ function Utils() {
     return combined;
   }
 
-  function compileInfo(obj, unitObj) {
-    const combined = combine(obj, unitObj);
-    combined.interpreted_code = interpretCode(obj.weather_code, obj.is_day);
+  function formatTime(iso) {
+    const date = new Date(iso);
+    const formatted = new Intl.DateTimeFormat("en-US", {
+      dateStyle: "full",
+      timeStyle: "long",
+    }).format(date);
+    console.log(formatted);
+    return formatted;
+  }
+
+  // Gets single unit for data that is returned in arrays (daily, hourly)
+  function extractPortion(obj, index) {
+    const day = {};
+    for (const [key, val] of Object.entries(obj)) {
+      day[key] = val[index];
+    }
+    console.log("Extracting: ", day);
+    return day;
+  }
+
+  // Process the API's json into more useful forms
+  function compileInfo(obj, unitObj, index = null) {
+    const myObj = index === null ? obj : extractPortion(obj, index);
+    const combined = combine(myObj, unitObj);
+    combined.interpreted_code = interpretCode(
+      myObj.weather_code,
+      myObj?.is_day
+    );
+    combined.formatted_time = formatTime(combined.time);
     return combined;
   }
+
   return { compileInfo };
 }
 

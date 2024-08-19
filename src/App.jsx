@@ -52,66 +52,65 @@ function App() {
       >
         count
       </button>
-      <Current data={data} />
+      <Current
+        data={
+          data ? Utils().compileInfo(data.current, data.current_units) : null
+        }
+      />
+      <Daily data={data} />
     </>
   );
 }
 
 function Current({ data }) {
   if (!data) return <div>Loading...</div>;
-  let obj = Utils().compileInfo(data.current, data.current_units);
   return (
     <div className="current uppercase">
-      <div className="time uppercase">
-        {obj.time.split("T").reverse().join(" ")}
-      </div>
-      <i className={obj.interpreted_code.icon + " uppercase"}></i>
-      <div className="desc uppercase">{obj.interpreted_code.description}</div>
-      <div className="temp uppercase">{obj.temperature_2m}°</div>
-      <div className="humidity uppercase">
-        Humidity: {obj.relative_humidity_2m}
-      </div>
-      <div className="feels uppercase-like">
-        Feels like: {obj.apparent_temperature}°
-      </div>
-      <div className="precipitation uppercase">
-        Precipitation: {obj.precipitation}
-      </div>
-      <div className="wind uppercase">
+      <div className="time">{data.formatted_time}</div>
+      <i className={data.interpreted_code.icon}></i>
+      <div className="desc">{data.interpreted_code.description}</div>
+      <div className="temp">{data.temperature_2m}</div>
+      <div className="humidity">Humidity: {data.relative_humidity_2m}</div>
+      <div className="feels-like">Feels like: {data.apparent_temperature}°</div>
+      <div className="precipitation">Precipitation: {data.precipitation}</div>
+      <div className="wind">
         Wind:&nbsp;
-        {obj.wind_speed_10m + " " + obj.wind_direction_10m}
+        {data.wind_speed_10m + " " + data.wind_direction_10m}
       </div>
     </div>
   );
 }
 
-function Weekly({ weeklyData }) {
-  return (
-    <div className="flex gap-2">
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-      <Day data={data} index={index}></Day>
-    </div>
-  );
+function Daily({ data }) {
+  if (!data) return <div>Loading...</div>;
+  else
+    return (
+      <div className="flex gap-2">
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 0)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 1)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 2)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 3)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 4)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 5)}></Day>
+        <Day data={Utils().compileInfo(data.daily, data.daily_units, 6)}></Day>
+      </div>
+    );
 }
 
-function Day({ data, index }) {
-  if (!data) return <div>Loading...</div>;
-  let obj = Utils().compileInfo(data.weekly[index], data.weekly_units);
+function Day({ data }) {
   return (
-    <div className="flex flex-col justify-center items-center ">
-      <div className="day"></div>
-      <i className={weatherCode.icon}></i>
-      <div className="desc">{weatherCode.description}</div>
-      <div className="temp">{obj.temperature_2m}°</div>
-      <div className="humidity">{obj.relative_humidity_2m}%</div>
-      <div className="feels-like">Feels like: {obj.apparent_temperature}°</div>
-      <div className="precipitation">{obj.precipitation}</div>
-      <div className="wind"></div>
+    <div className="day flex flex-col justify-center items-center uppercase">
+      <div className="time">{data.time}</div>
+      <i className={data.interpreted_code.icon}></i>
+      <div className="desc">{data.interpreted_code.description}</div>
+      <div className="hi-low">
+        {data.apparent_temperature_max} / {data.apparent_temperature_max}
+      </div>
+      <div className="hi-low-feels-like">
+        Feels like: {data.apparent_temperature_max} /{" "}
+        {data.apparent_temperature_max}
+      </div>
+      <div className="precipitation">Precipitation: {data.precipitation}</div>
     </div>
   );
 }
@@ -137,7 +136,7 @@ function Search({ onInputChange, onSearch, inputValue, geoData }) {
         onChange={(event) => onInputChange(event.target.value)}
         className="h-12 p-4 rounded-sm w-3/4 max-w-96 text-xl "
       />
-      <SvgButton onclick={onSearch} text="SEARCH"></SvgButton>
+      <SvgButton onClick={onSearch} text="SEARCH"></SvgButton>
     </>
   );
 }
@@ -153,16 +152,17 @@ function Bg() {
   );
 }
 
-function SvgButton({ text }) {
+function SvgButton({ onClick, text }) {
   return (
     <div className="searchButton relative w-80 inline-block color1 glow translate-y-1/2">
-      <div className="absolute font-bold text-3xl left-[55%] text-shadow-sm shadow-white top-1/3 -translate-x-1/2 -translate-y-1/2 z-10">
+      <div className="absolute font-bold text-3xl left-[55%] text-shadow-sm shadow-white top-1/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
         {text}
       </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="1076.97 251.63 951.42 327.08"
         role="button"
+        onClick={onClick}
       >
         <g>
           <polygon
