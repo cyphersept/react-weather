@@ -13,6 +13,8 @@ function APIs() {
     daily:
       "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max",
   };
+
+  // Convert request parameters to API url
   const formatRequest = (params, endpoint) => {
     let str = endpoint.concat("?");
     for (const [param, val] of Object.entries(params)) {
@@ -21,6 +23,7 @@ function APIs() {
     return str.slice(0, -1);
   };
 
+  // Template for individualizing fetch functions
   const requestApi = async (params, endpoint) => {
     const url =
       typeof params === "string" ? params : formatRequest(params, endpoint);
@@ -44,6 +47,7 @@ function APIs() {
 }
 
 function Utils() {
+  // Translates weather code to description and icon mapping found in codes.js
   function interpretCode(code, isDay) {
     const dayOrNight = isDay === 0 ? "night" : "day";
     const codeInfo = weatherCodes[code][dayOrNight];
@@ -51,6 +55,7 @@ function Utils() {
     return codeInfo;
   }
 
+  // Combines values with units for ease of display
   function combine(obj, unitObj) {
     const combined = {};
     for (let key in unitObj) {
@@ -60,6 +65,7 @@ function Utils() {
     return combined;
   }
 
+  // Prettifies time string
   function formatTime(iso) {
     const date = new Date(iso);
     const formatted = new Intl.DateTimeFormat("en-US", {
@@ -76,7 +82,6 @@ function Utils() {
     for (const [key, val] of Object.entries(obj)) {
       day[key] = val[index];
     }
-    console.log("Extracting: ", day);
     return day;
   }
 

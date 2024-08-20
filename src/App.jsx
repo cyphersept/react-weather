@@ -3,6 +3,7 @@ import { APIs, Utils } from "./Weather.js";
 import bg from "./assets/neon-bg-hd.webp";
 import bg4k from "./assets/neon-bg-4k.webp";
 import "./index.css";
+import "./css/weather-icons.min.css";
 
 function App() {
   const [data, setData] = useState(null);
@@ -33,25 +34,12 @@ function App() {
 
   return (
     <>
-      <Bg></Bg>
       <Search
         onInputChange={handleInputChange}
         onSearch={onSearch}
         inputValue={inputValue}
         geoData={geo}
       ></Search>
-      <button
-        onClick={async () => {
-          try {
-            const data = await APIs().requestGeo(inputValue);
-            setData(data);
-          } catch (error) {
-            console.error("Failed to find location: ", error);
-          }
-        }}
-      >
-        count
-      </button>
       <Current
         data={
           data ? Utils().compileInfo(data.current, data.current_units) : null
@@ -67,7 +55,12 @@ function Current({ data }) {
   return (
     <div className="current uppercase">
       <div className="time">{data.formatted_time}</div>
-      <i className={data.interpreted_code.icon}></i>
+      <i
+        className={
+          "wi text-shadow-sm shadow-white text-5xl " +
+          data.interpreted_code.icon
+        }
+      ></i>
       <div className="desc">{data.interpreted_code.description}</div>
       <div className="temp">{data.temperature_2m}</div>
       <div className="humidity">Humidity: {data.relative_humidity_2m}</div>
@@ -85,7 +78,7 @@ function Daily({ data }) {
   if (!data) return <div>Loading...</div>;
   else
     return (
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-center flex-wrap">
         <Day data={Utils().compileInfo(data.daily, data.daily_units, 0)}></Day>
         <Day data={Utils().compileInfo(data.daily, data.daily_units, 1)}></Day>
         <Day data={Utils().compileInfo(data.daily, data.daily_units, 2)}></Day>
@@ -99,28 +92,57 @@ function Daily({ data }) {
 
 function Day({ data }) {
   return (
-    <div className="day flex flex-col justify-center items-center uppercase">
-      <div className="time">{data.time}</div>
-      <i className={data.interpreted_code.icon}></i>
-      <div className="desc">{data.interpreted_code.description}</div>
-      <div className="hi-low">
-        {data.apparent_temperature_max} / {data.apparent_temperature_max}
+    <div className="day uppercase bg-[url('./assets/box-tab.svg')] bg-no-repeat w-56 h-32 bg-[100%_auto]">
+      <div className="content ml-12 p-1">
+        <div className="time text-[1.25em] font-bold text-shadow-sm shadow-purple-1 text-magenta">
+          {data.time.slice(5).replace("-", "/")}
+        </div>
+        <i
+          className={
+            "wi text-shadow-sm shadow-white my-2 text-[1.5em] md:text-[2.5em] float-left " +
+            data.interpreted_code.icon
+          }
+        ></i>
+        <Marquee content={data.interpreted_code.description} />
+        <Marquee
+          content={
+            <>
+              //:Temp: {data.apparent_temperature_min}
+              <span className="text-magenta"> / </span>
+              {data.apparent_temperature_max}
+              //:Feel: {data.apparent_temperature_min}
+              <span className="text-magenta"> / </span>
+              {data.apparent_temperature_max}
+            </>
+          }
+        />
+        <Marquee
+          className="precipitation"
+          content={"Precipitation: " + data.precipitation_probability_max}
+        />
       </div>
-      <div className="hi-low-feels-like">
-        Feels like: {data.apparent_temperature_max} /{" "}
-        {data.apparent_temperature_max}
+    </div>
+  );
+}
+
+function Marquee({ content }) {
+  return (
+    <div className="wrapper overflow-hidden h-6">
+      <div className="text-scroll whitespace-nowrap">
+        <p className="inline-block">{content}</p>
+        <p className="inline-block">{content}</p>
       </div>
-      <div className="precipitation">Precipitation: {data.precipitation}</div>
     </div>
   );
 }
 
 function Search({ onInputChange, onSearch, inputValue, geoData }) {
   return (
-    <>
+    <div className="my-8">
+      <div className="float-left"></div>
       <label
         htmlFor="lookupGeocode"
-        className="font-bold text-4xl text-white text-shadow shadow-white "
+        className="font-bold text-4xl text-white text-shadow shadow-white block "
       >
         LOCATION:{" "}
         {geoData
@@ -128,33 +150,24 @@ function Search({ onInputChange, onSearch, inputValue, geoData }) {
           : "LOADING..."}
       </label>
 
-      <input
-        type="text"
-        id="lookupGeocode"
-        placeholder="Lookup location..."
-        value={inputValue}
-        onChange={(event) => onInputChange(event.target.value)}
-        className="h-12 p-4 rounded-sm w-3/4 max-w-96 text-xl "
-      />
-      <SvgButton onClick={onSearch} text="SEARCH"></SvgButton>
-    </>
-  );
-}
-
-function Bg() {
-  return (
-    <img
-      className="absolute bg-cover -z-10"
-      src={bg}
-      alt="Seoul Night Photo by Steve Roe"
-      srcSet={bg + " 1920w, " + bg4k + " 3840w"}
-    />
+      <div className="right mt-8 relative">
+        <input
+          type="text"
+          id="lookupGeocode"
+          placeholder="Lookup location..."
+          value={inputValue}
+          onChange={(event) => onInputChange(event.target.value)}
+          className="h-12 p-4 rounded-sm min-w-80 w-3/5 max-w-3/4 text-xl border-white border-double border-4 bg-purple-4 color1"
+        />
+        <SvgButton onClick={onSearch} text="SEARCH"></SvgButton>
+      </div>
+    </div>
   );
 }
 
 function SvgButton({ onClick, text }) {
   return (
-    <div className="searchButton relative w-80 inline-block color1 glow translate-y-1/2">
+    <div className="absolute searchButton w-80 color1 glow -top-4 right-0 -translate-x-1/2">
       <div className="absolute font-bold text-3xl left-[55%] text-shadow-sm shadow-white top-1/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
         {text}
       </div>
