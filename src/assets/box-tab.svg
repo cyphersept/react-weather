@@ -1,46 +1,29 @@
-<svg version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="231 1538.87 417.25 251.62" xml:space="preserve">
-  <defs>
-    <style type="text/css"><![CDATA[
-      .color1 {fill:#ff5dcc}
-	  .color2 {fill:#ffffff}
-	  .color3 {fill:#ffacdb;}
-	  .color4 {fill:#ca60ae}
-	  .panel {
-	  	stroke:#5efdf7;
-		stroke-width:5px;
-		fill:#5f6ee7;
-		fill-opacity:0.65;
-		}
-    ]]></style>
-  </defs>
-<g id="box-tab">
-	<g>
-		<g>
-			<polygon class="color4" points="333.868,1771.335 317.482,1787.721 251.939,1787.721 251.939,1656.634 268.324,1656.634 
-				268.324,1771.335 			"/>
-		</g>
-	</g>
-	<g>
-		      <path class="color1" d="M 400.542 1790.452 L 327.275 1790.452 L 381.895 1735.832 L 524.347 1735.832 L 486.114 1774.066 L 416.929 1774.066 L 400.542 1790.452 Z"/>
-	</g>
-
-	<g>
-		<polygon class="color2" points="287.441,1754.949 281.979,1754.949 281.979,1642.979 251.939,1642.979 251.939,1637.517 
-			287.441,1637.517 		"/>
-	</g>
-	<g>
-		<polygon class="color2" points="287.441,1632.055 251.939,1632.055 251.939,1626.593 281.979,1626.593 281.979,1621.131 
-			251.939,1621.131 251.939,1615.669 287.441,1615.669 		"/>
-	</g>
-	<g>
-		<g>
-			<path class="color1" d="M648.24,1538.892v35.612h-5.571c0-8.284-3.368-15.804-8.794-21.247
-				c-5.444-5.426-12.963-8.794-21.247-8.794v-5.571H648.24z"/>
-		</g>
-	</g>
-	<g>
-		<path class="panel" d="M 647.931 1724.908 L 314.751 1724.908 L 314.751 1608.606 L 299.965 1593.821 L 231.001 1593.821 L 231.001 1560.454 L 252.253 1539.201 L 580.787 1539.201 L 647.931 1606.345 L 647.931 1724.908 Z"/>
-	</g>
-</g>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" version="1.1" viewBox="0 0 398 252" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-250.95 -1538.9)">
+        
+            
+                <path d="m333.87 1761.3-16.386 16.38h-55.543v-121.09h16.385v104.71h55.544z" fill="#ca60ae" fill-rule="nonzero"/>
+            
+        
+        
+            <path d="m380.54 1790.4h-53.267l36.62-36.62h162.45l-20.233 20.24h-109.18l-16.387 16.38z" fill="#ff5dcc" fill-rule="nonzero"/>
+        
+        <g transform="translate(10)">
+            <path d="m287.44 1747h-5.462v-103.97h-30.04v-5.46h35.502v109.43z" fill="#fff" fill-rule="nonzero"/>
+        </g>
+        <g transform="translate(10)">
+            <path d="m287.44 1632.1h-35.502v-5.47h30.04v-5.46h-30.04v-5.46h35.502v16.39z" fill="#fff" fill-rule="nonzero"/>
+        </g>
+        
+            
+                <path d="m648.24 1538.9v35.61h-5.571c0-8.28-3.368-15.8-8.794-21.24-5.444-5.43-12.963-8.8-21.247-8.8v-5.57h35.612z" fill="#ff5dcc" fill-rule="nonzero"/>
+            
+        
+        
+            <path d="m647.93 1739.9h-333.18v-131.3l-14.786-14.79h-48.964v-33.37l21.252-21.25h308.53l67.144 67.15v133.56z" fill="#5f6ee7" fill-opacity=".65" fill-rule="nonzero"/>
+            <path d="m647.93 1739.9h-333.18v-131.3l-14.786-14.79h-48.964v-33.37l21.252-21.25h308.53l67.144 67.15v133.56zm-5-5h-323.18v-128.37l-17.715-17.72h-46.035v-26.29s18.323-18.33 18.323-18.33h304.39s64.215 64.22 64.215 64.22v126.49z" fill="#5efdf7"/>
+        
+    </g>
 </svg>

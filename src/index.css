@@ -8,8 +8,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -66,20 +64,35 @@ button:focus-visible {
 }
 
 input {
-  box-shadow: inset 0px 0px 4px 0px var(--c1), inset 0px -2px 10px 2px var(--c5),
-    inset 0px 2px 16px 2px var(--c6), 0px 0px 8px 0px var(--c1);
+  box-shadow: inset 0px 0px 4px 0px var(--c1), inset 0px -2px 10px 2px var(--c4),
+    inset 0px 2px 16px 2px var(--c5), 0px 0px 8px 0px var(--c1);
 }
 
-.color1 {
+.pinkish {
   --c1: #ffcfeb;
   --c2: #ff80d7;
   --c3: theme(colors.purple.1);
   --c4: theme(colors.purple.2);
   --c5: #5f1fb3;
-  --c6: #28015c;
 }
 
-.color2 {
+.magentaish {
+  --c1: lightpink;
+  --c2: orchid;
+  --c3: theme(colors.magenta);
+  --c4: fuchsia;
+  --c5: darkorchid;
+}
+
+.purplish {
+  --c1: lightpink;
+  --c2: orchid;
+  --c3: theme(colors.magenta);
+  --c4: #5f1fb3;
+  --c5: #28015c;
+}
+
+.cyanish {
   --c1: #b8fdff;
   --c2: theme(colors.cyan);
   --c3: theme(colors.blue.2);
@@ -87,16 +100,12 @@ input {
   --c5: theme(colors.blue.4);
 }
 
-.group1 {
-  fill: theme(colors.purple.1);
-}
-
-.group2 {
-  fill: white;
-}
-
-.group3 {
-  fill: #ffacdb;
+.cyan {
+  --c1: #b8fdff;
+  --c2: theme(colors.cyan);
+  --c3: theme(colors.blue.2);
+  --c4: theme(colors.blue.3);
+  --c5: theme(colors.blue.4);
 }
 
 .glow {
@@ -122,14 +131,27 @@ input {
 }
 
 .text-scroll {
-  animation: text-scroll 2s linear infinite;
+  animation: text-scroll 4s linear infinite;
 }
 
 @keyframes text-scroll {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(100%);
   }
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes text-scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  40%,
+  60% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
