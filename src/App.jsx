@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { APIs, Utils } from "./Weather.js";
-import { SvgButton, SvgBoxTabbed } from "./SVGs.jsx";
+import { SvgButton, SvgBoxTabbed, SvgPanel } from "./SVGs.jsx";
 import "./index.css";
 import "./css/weather-icons.min.css";
 
@@ -52,7 +52,8 @@ function App() {
 function Current({ data }) {
   if (!data) return <div>Loading...</div>;
   return (
-    <div className="current uppercase">
+    <div className="current uppercase relative w-[48rem] ">
+      <SvgPanel />
       <div className="time">{data.formatted_time}</div>
       <i
         className={
@@ -95,8 +96,8 @@ function Day({ data }) {
     <div className="day uppercase w-56 h-36 bg-[100%_auto] text-[0.5rem] relative font-semibold">
       <SvgBoxTabbed />
       <div className="content pt-1.5 pl-11 text-base tracking-tight min-h-28">
-        <div className="-ml-6 font-bold text-shadow-sm shadow-white h-6">
-          <span className="time text-[1.05rem] font-extrabold text-[hotpink] align-top">
+        <div className="-ml-6 font-bold text-shadow-sm shadow-[orchid] h-6">
+          <span className="time text-[1.05rem] text-[hotpink] shadow-white text-shadow-sm align-top -mt-1">
             {data.time.slice(5).replace("-", "/")} -{" "}
           </span>
           {weatherDescription.length < 14 ? (
@@ -111,17 +112,17 @@ function Day({ data }) {
             data.interpreted_code.icon
           }
         ></i>
-        <div className="temp mt-1">
+        <div className="temp mt-1 text-shadow-sm shadow-[orchid]">
           {data.apparent_temperature_min}
-          <span className="text-magenta font-bold"> / </span>
+          <span className="text-[hotpink] font-bold"> / </span>
           {data.apparent_temperature_max}
         </div>
-        <div className="feel">
+        <div className="feel text-shadow-sm shadow-[orchid]">
           {data.apparent_temperature_min}
-          <span className="text-magenta font-bold"> / </span>
+          <span className="text-[hotpink] font-bold"> / </span>
           {data.apparent_temperature_max}
         </div>
-        <div className="precipitation">
+        <div className="precipitation text-shadow-sm shadow-[orchid]">
           Precipitation: {data.precipitation_probability_max}
         </div>
       </div>

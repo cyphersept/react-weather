@@ -108,6 +108,12 @@ input {
   --c5: theme(colors.blue.4);
 }
 
+.static-glow {
+  filter: drop-shadow(0px 0px 0.2em var(--c1))
+    drop-shadow(0px 0px 0.3em var(--c1)) drop-shadow(0px 0px 0.4em var(--c2))
+    drop-shadow(0px 0px 0.75em var(--c3)) drop-shadow(0px 0px 1em var(--c5));
+}
+
 .glow {
   animation: glow 4s ease-out infinite alternate;
 }
@@ -137,19 +143,6 @@ input {
 @keyframes text-scroll {
   0% {
     transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes text-scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  40%,
-  60% {
-    transform: translateX(0%);
   }
   100% {
     transform: translateX(-100%);
