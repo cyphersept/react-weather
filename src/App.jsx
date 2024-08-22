@@ -52,23 +52,38 @@ function App() {
 function Current({ data }) {
   if (!data) return <div>Loading...</div>;
   return (
-    <div className="current uppercase relative w-[48rem] ">
+    <div className="current uppercase relative w-[42rem] ">
       <SvgPanel />
-      <div className="time">{data.formatted_time}</div>
-      <i
-        className={
-          "wi text-shadow-sm shadow-white text-5xl " +
-          data.interpreted_code.icon
-        }
-      ></i>
-      <div className="desc">{data.interpreted_code.description}</div>
-      <div className="temp">{data.temperature_2m}</div>
-      <div className="humidity">Humidity: {data.relative_humidity_2m}</div>
-      <div className="feels-like">Feels like: {data.apparent_temperature}°</div>
-      <div className="precipitation">Precipitation: {data.precipitation}</div>
-      <div className="wind">
-        Wind:&nbsp;
-        {data.wind_speed_10m + " " + data.wind_direction_10m}
+      <div className="content px-20 py-10 text-xl">
+        <h1 className="time text-3xl">{data.formatted_time}</h1>
+        <div className="float-right mt-4">
+          <i
+            className={
+              "wi text-shadow-sm shadow-white text-[9rem] " +
+              data.interpreted_code.icon
+            }
+          ></i>
+          <div className="desc text-shadow shadow-white ">
+            {data.interpreted_code.description}
+          </div>
+        </div>
+        <div className=" mt-4 ml-8 mr-4 ">
+          <div className="temp">Temperature:// {data.temperature_2m}</div>
+          <div className="feels-like">
+            Feels like:// {data.apparent_temperature}°
+          </div>
+          <div className="humidity">
+            Humidity:// {data.relative_humidity_2m}
+          </div>
+          <div className="precipitation">
+            Precipitation:// {data.precipitation}
+          </div>
+          <div className="cloud">Cloud cover:// {data.cloud_cover}</div>
+          <div className="wind">
+            Wind:// &nbsp;
+            {data.wind_speed_10m + " " + data.wind_direction_10m}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -93,11 +108,11 @@ function Daily({ data }) {
 function Day({ data }) {
   const weatherDescription = data.interpreted_code.description;
   return (
-    <div className="day uppercase w-56 h-36 bg-[100%_auto] text-[0.5rem] relative font-semibold">
+    <div className="day uppercase w-56 h-36 bg-[100%_auto] relative font-semibold">
       <SvgBoxTabbed />
-      <div className="content pt-1.5 pl-11 text-base tracking-tight min-h-28">
-        <div className="-ml-6 font-bold text-shadow-sm shadow-[orchid] h-6">
-          <span className="time text-[1.05rem] text-[hotpink] shadow-white text-shadow-sm align-top -mt-1">
+      <div className="content pt-1 pl-11 pr-1 tracking-tight min-h-28">
+        <div className="-ml-8 font-bold text-shadow-sm shadow-[orchid] h-6">
+          <span className="time text-[1.05rem] text-[hotpink] shadow-white text-shadow-sm align-baseline -mt-1">
             {data.time.slice(5).replace("-", "/")} -{" "}
           </span>
           {weatherDescription.length < 14 ? (
@@ -112,7 +127,7 @@ function Day({ data }) {
             data.interpreted_code.icon
           }
         ></i>
-        <div className="temp mt-1 text-shadow-sm shadow-[orchid]">
+        <div className="temp mt-1.5 text-shadow-sm shadow-[orchid]">
           {data.apparent_temperature_min}
           <span className="text-[hotpink] font-bold"> / </span>
           {data.apparent_temperature_max}
@@ -161,7 +176,7 @@ function Search({ onInputChange, onSearch, inputValue, geoData }) {
           placeholder="Lookup location..."
           value={inputValue}
           onChange={(event) => onInputChange(event.target.value)}
-          className="h-12 p-4 rounded-sm min-w-80 w-3/5 max-w-3/4 text-xl border-white border-double border-4 bg-purple-4 purplish"
+          className="h-12 p-4 rounded-sm min-w-80 w-3/5 max-w-3/4 text-xl border-white border-double border-4 bg-purple-3 purplish"
         />
         <SvgButton onClick={onSearch} text="SEARCH"></SvgButton>
       </div>
