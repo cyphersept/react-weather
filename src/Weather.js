@@ -9,7 +9,7 @@ function APIs() {
     current:
       "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m",
     hourly:
-      "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code",
+      "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m",
     daily:
       "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_probability_max",
   };
@@ -51,7 +51,6 @@ function Utils() {
   function interpretCode(code, isDay) {
     const dayOrNight = isDay === 0 ? "night" : "day";
     const codeInfo = weatherCodes[code][dayOrNight];
-    console.log(codeInfo);
     return codeInfo;
   }
 
@@ -72,7 +71,6 @@ function Utils() {
       dateStyle: "full",
       timeStyle: "long",
     }).format(date);
-    console.log(formatted);
     return formatted;
   }
 
