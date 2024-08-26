@@ -7,10 +7,15 @@ import "./css/weather-icons.min.css";
 function App() {
   const [data, setData] = useState(null);
   const [geo, setGeo] = useState(null);
+  const [day, setDay] = useState(0);
   const [inputValue, setInputValue] = useState("Seoul");
 
   const handleInputChange = (value) => {
     setInputValue(value);
+  };
+
+  const handleDayClick = (num) => {
+    setDay(num);
   };
 
   const onSearch = async () => {
@@ -29,10 +34,12 @@ function App() {
 
   useEffect(() => {
     onSearch();
+    createRaindrops();
   }, []);
 
   return (
-    <div className="py-8 m-auto w-fit max-w-[max(78rem,75vw)]">
+    <div className="py-8 m-auto w-fit max-w-[max(78rem,75vw)] h-fit">
+      <div className="rain fixed top-0 left-0 h-full w-full "></div>
       <Search
         onInputChange={handleInputChange}
         onSearch={onSearch}
@@ -48,9 +55,9 @@ function App() {
                 : null
             }
           />
-          <Hourly data={data} />
+          <Hourly data={data} day={day} />
         </div>
-        <Daily data={data} />
+        <Daily data={data} childClicks={handleDayClick} />
       </div>
     </div>
   );
@@ -99,45 +106,37 @@ function Current({ data }) {
   );
 }
 
-function Daily({ data }) {
+function Daily({ data, childClicks }) {
   if (!data) return <div>Loading...</div>;
-  else
+  const arr = Array(7).fill("a");
+  const listDays = arr.map((_, index) => {
     return (
-      <div className="daily relative flex flex-col justify-center content-center">
-        <h1 className="text-3xl font-bold text-center mt-4 mb-6 shadow-white text-shadow">
-          WEEKLY FORECAST
-        </h1>
-        <div className="flex gap-x-2 gap-y-8 justify-center content-center flex-wrap ">
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 0)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 1)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 2)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 3)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 4)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 5)}
-          ></Day>
-          <Day
-            data={Utils().compileInfo(data.daily, data.daily_units, 6)}
-          ></Day>
-        </div>
-      </div>
+      <Day
+        key={index}
+        data={Utils().compileInfo(data.daily, data.daily_units, index)}
+        onClick={() => childClicks(index)}
+      />
     );
+  });
+  return (
+    <div className="daily relative flex flex-col justify-center content-center">
+      <h1 className="text-3xl font-bold text-center mt-4 mb-6 shadow-white text-shadow">
+        WEEKLY FORECAST
+      </h1>
+      <div className="flex gap-x-2 gap-y-8 justify-center content-center flex-wrap ">
+        {listDays}
+      </div>
+    </div>
+  );
 }
 
-function Day({ data }) {
+function Day({ data, onClick }) {
   const weatherDescription = data.interpreted_code.description;
   return (
-    <div className="day uppercase w-[14em] h-[9em] bg-[100%_auto] relative font-semibold max-md:text-xl">
+    <div
+      className="day uppercase w-[14em] h-[9em] bg-[100%_auto] relative font-semibold max-md:text-xl"
+      onClick={onClick}
+    >
       <SvgBoxTabbed />
       <div className="content pt-[0.25em] pl-[2.75em] pr-[0.25em] tracking-tight min-h-[7em]">
         <div className="-ml-8 font-bold text-shadow-sm shadow-[orchid] h-6">
@@ -174,10 +173,9 @@ function Day({ data }) {
   );
 }
 
-function Hourly({ data }) {
+function Hourly({ data, day }) {
   if (!data) return <div>Loading...</div>;
 
-  const [day, setDay] = useState(0);
   const arr = Array(24).fill("a");
   const listHours = arr.map((_, index) => {
     const n = 24 * day + index;
@@ -195,7 +193,8 @@ function Hourly({ data }) {
         className="text-3xl font-bold text-shadow shadow-white text-center mb-4"
         role="caption"
       >
-        Hourly Forecast
+        Hourly Forecast <span className="text-cyan font-bold"> / </span>
+        {data.hourly.time[day * 24].substring(5, 10)}
       </h1>
       <div className="table-header grid text-magenta text-shadow shadow-[navy] font-bold w-fit">
         <span className="inline-block text-center">Time</span>
@@ -217,7 +216,7 @@ function Hour({ data }) {
   return (
     <>
       <span className="text-center py-1">
-        {data.time.substring(6).split("T").join(" ")}
+        {data.time.substring(5).split("T").join(" ")}
       </span>
       <span
         className={
@@ -275,6 +274,20 @@ function Marquee({ content }) {
       </div>
     </div>
   );
+}
+
+// from https://codepen.io/Chitus/pen/LYXQJye
+function createRaindrops() {
+  const rainContainer = document.querySelector(".rain");
+  const dropCount = 100;
+
+  for (let i = 0; i < dropCount; i++) {
+    const drop = document.createElement("div");
+    drop.className = "drop";
+    drop.style.left = `${Math.random() * 100}%`;
+    drop.style.animationDelay = `${Math.random()}s`;
+    rainContainer.appendChild(drop);
+  }
 }
 
 export default App;

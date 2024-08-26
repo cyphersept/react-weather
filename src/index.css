@@ -81,16 +81,13 @@
     min-width: 100%;
     grid-template-columns: 6rem repeat(5, 5.5rem);
   }
-  /* .daily::before {
-    --tw-shadow-color: white;
-    content: "WEEKLY FORECAST ";
-    font-weight: bold;
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    position: absolute;
-    top: -4rem;
-    text-shadow: theme(textShadow.DEFAULT);
-  } */
+
+  .day:hover {
+    filter: brightness(130%);
+    & .opacity-60 {
+      opacity: 0.9;
+    }
+  }
 
   .pinkish {
     --c1: #ffcfeb;
@@ -173,6 +170,30 @@
     }
     100% {
       transform: translateX(-100%);
+    }
+  }
+
+  .drop {
+    position: absolute;
+    will-change: transform;
+    width: 1.5px;
+    height: 3.5rem;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.3)
+    );
+    animation: rain-fall 1.25s linear infinite;
+  }
+
+  @keyframes rain-fall {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(100vh);
+      opacity: 1;
     }
   }
 }
