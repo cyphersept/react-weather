@@ -32,15 +32,15 @@ function App() {
   }, []);
 
   return (
-    <div className="py-8 m-auto max-w-[84rem]">
+    <div className="py-8 m-auto w-fit max-w-[max(78rem,75vw)]">
       <Search
         onInputChange={handleInputChange}
         onSearch={onSearch}
         inputValue={inputValue}
         geoData={geo}
       ></Search>
-      <div className="results flex ">
-        <div className="flex flex-col ">
+      <div className="results flex max-lg:flex-wrap max-lg:justify-center gap-y-8">
+        <div className="flex flex-col gap-y-8">
           <Current
             data={
               data
@@ -58,7 +58,7 @@ function App() {
 
 function Current({ data }) {
   return (
-    <div className="current uppercase relative w-[42rem] h-96 mb-4 ">
+    <div className="current uppercase relative w-[42rem] h-96 ">
       <SvgPanel />
       {data && (
         <div className="content px-20 pt-11 text-xl">
@@ -103,14 +103,33 @@ function Daily({ data }) {
   if (!data) return <div>Loading...</div>;
   else
     return (
-      <div className="flex gap-2 justify-center flex-wrap max-w-[50%] mt-8 ">
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 0)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 1)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 2)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 3)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 4)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 5)}></Day>
-        <Day data={Utils().compileInfo(data.daily, data.daily_units, 6)}></Day>
+      <div className="daily relative flex flex-col justify-center content-center">
+        <h1 className="text-3xl font-bold text-center mt-4 mb-6 shadow-white text-shadow">
+          WEEKLY FORECAST
+        </h1>
+        <div className="flex gap-x-2 gap-y-8 justify-center content-center flex-wrap ">
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 0)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 1)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 2)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 3)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 4)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 5)}
+          ></Day>
+          <Day
+            data={Utils().compileInfo(data.daily, data.daily_units, 6)}
+          ></Day>
+        </div>
       </div>
     );
 }
@@ -118,11 +137,11 @@ function Daily({ data }) {
 function Day({ data }) {
   const weatherDescription = data.interpreted_code.description;
   return (
-    <div className="day uppercase w-56 h-36 bg-[100%_auto] relative font-semibold">
+    <div className="day uppercase w-[14em] h-[9em] bg-[100%_auto] relative font-semibold max-md:text-xl">
       <SvgBoxTabbed />
-      <div className="content pt-1 pl-11 pr-1 tracking-tight min-h-28">
+      <div className="content pt-[0.25em] pl-[2.75em] pr-[0.25em] tracking-tight min-h-[7em]">
         <div className="-ml-8 font-bold text-shadow-sm shadow-[orchid] h-6">
-          <span className="time text-[1.05rem] text-[hotpink] shadow-white text-shadow-sm align-baseline -mt-1">
+          <span className="time text-[1.05em] text-[hotpink] shadow-white text-shadow-sm align-baseline -mt-1">
             {data.time.slice(5).replace("-", "/")} -{" "}
           </span>
           {weatherDescription.length < 14 ? (
@@ -133,7 +152,7 @@ function Day({ data }) {
         </div>
         <i
           className={
-            "wi text-shadow-sm shadow-white text-[1.5em] md:text-[2.5em] mx-2 mt-2 float-right " +
+            "wi text-shadow-sm shadow-white text-[2.5em] mx-1.5 mt-2 float-right " +
             data.interpreted_code.icon
           }
         ></i>
@@ -159,7 +178,7 @@ function Hourly({ data }) {
   if (!data) return <div>Loading...</div>;
 
   const [day, setDay] = useState(0);
-  const arr = Array(24);
+  const arr = Array(24).fill("a");
   const listHours = arr.map((_, index) => {
     const n = 24 * day + index;
     return (
@@ -171,69 +190,57 @@ function Hourly({ data }) {
   });
 
   return (
-    <div className="hourly ml-10 ">
-      <table className="uppercase table-fixed text-white bg-[navy] bg-opacity-40 border-4 border- white box-shadow purplish ">
-        <caption className="text-3xl font-bold mb-2 text-shadow shadow-white ">
-          Hourly Forecast
-        </caption>
-        <div className="p-6 overflow-y-scroll scroller">
-          <thead className="text-magenta text-shadow shadow-[navy] font-bold ">
-            <tr>
-              <th className="w-32 text-center ">Time</th>
-              <th className="w-20 text-center ">Weather</th>
-              <th className="w-20 text-center ">Temp</th>
-              <th className="w-20 text-center ">Feel</th>
-              <th className="w-20 text-center ">Precip</th>
-              <th className="w-20 text-center ">Humidity</th>
-              {/* <th className="w-28 text-center ">Cloud Cover</th>
-              <th className="w-28 text-center ">Wind</th> */}
-            </tr>
-          </thead>
-          <tbody className="divide-y-2 divide-purple-6 ">
-            <Hour
-              data={Utils().compileInfo(data.hourly, data.hourly_units, 0)}
-            />
-            <Hour
-              data={Utils().compileInfo(data.hourly, data.hourly_units, 1)}
-            />
-            <Hour
-              data={Utils().compileInfo(data.hourly, data.hourly_units, 2)}
-            />
-            <Hour
-              data={Utils().compileInfo(data.hourly, data.hourly_units, 3)}
-            />
-          </tbody>
-        </div>
-      </table>
+    <div className="hourly container uppercase ml-10 text-white bg-[navy] bg-opacity-40 border-4 white box-shadow purplish min-h-80 h-[calc(100vh-36.5rem)] w-fit flex flex-col p-4">
+      <h1
+        className="text-3xl font-bold text-shadow shadow-white text-center mb-4"
+        role="caption"
+      >
+        Hourly Forecast
+      </h1>
+      <div className="table-header grid text-magenta text-shadow shadow-[navy] font-bold w-fit">
+        <span className="inline-block text-center">Time</span>
+        <span className="inline-block text-center">Weather</span>
+        <span className="inline-block text-center">Temp</span>
+        <span className="inline-block text-center">Feel</span>
+        <span className="inline-block text-center">Precip</span>
+        <span className="mr-6 inline-block text-center">Humidity</span>
+        {/* <th className="w-28 text-center ">Cloud Cover</th>
+                <th className="w-28 text-center ">Wind</th> */}
+      </div>
+      <div className="table-body grid overflow-y-scroll scroller w-fit">
+        {listHours}
+      </div>
     </div>
   );
 }
 function Hour({ data }) {
   return (
-    <tr>
-      <th scope="row">{data.time.substring(6).split("T").join(" ")}</th>
-      <td className="text-center py-1.5 ">
-        <p
-          className={"wi text-lg " + data.interpreted_code.icon}
-          title={data.interpreted_code.description}
-        >
-          {" "}
-        </p>
-      </td>
-      <td className="text-center py-1 ">{data.temperature_2m}</td>
-      <td className="text-center py-1 ">{data.apparent_temperature}</td>
-      <td className="text-center py-1 ">{data.precipitation_probability}</td>
-      <td className="text-center py-1 ">{data.relative_humidity_2m}</td>
+    <>
+      <span className="text-center py-1">
+        {data.time.substring(6).split("T").join(" ")}
+      </span>
+      <span
+        className={
+          "text-center py-1.5 wi text-lg " + data.interpreted_code.icon
+        }
+        title={data.interpreted_code.description}
+      ></span>
+      <span className="text-center py-1 ">{data.temperature_2m}</span>
+      <span className="text-center py-1 ">{data.apparent_temperature}</span>
+      <span className="text-center py-1 ">
+        {data.precipitation_probability}
+      </span>
+      <span className="text-center py-1 ">{data.relative_humidity_2m}</span>
       {/* <td className="text-center py-1 ">{data.cloud_cover}</td>
       <td className="text-center py-1 ">
         {data.wind_speed_10m} {data.wind_direction_10m}
       </td> */}
-    </tr>
+    </>
   );
 }
 function Search({ onInputChange, onSearch, inputValue, geoData }) {
   return (
-    <div className="mx-10 mb-16 min-w-[36rem] relative">
+    <div className="mx-10 mb-16 min-w-96 max-w-full relative">
       <div className="float-left"></div>
       <label
         htmlFor="lookupGeocode"
@@ -252,7 +259,7 @@ function Search({ onInputChange, onSearch, inputValue, geoData }) {
           placeholder="Lookup location..."
           value={inputValue}
           onChange={(event) => onInputChange(event.target.value)}
-          className="h-12 p-4 rounded-sm w-1/2 text-xl border-white border-double border-4 bg-purple-3 purplish"
+          className="h-12 p-4 rounded-sm w-2/3 text-xl border-white border-double border-4 bg-purple-3 purplish"
         />
         <SvgButton onClick={onSearch} text="SEARCH"></SvgButton>
       </div>

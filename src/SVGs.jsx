@@ -1,6 +1,6 @@
 function SvgButton({ onClick, text }) {
   return (
-    <div className="absolute searchButton w-80 fill-magenta pinkish pulse-glow -top-4 left-[calc(50%+4rem)] ">
+    <div className="absolute searchButton w-80 fill-magenta pinkish pulse-glow -top-4 right-4 ">
       <div className="absolute font-bold text-3xl left-[55%] text-shadow-sm shadow-white top-1/3 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
         {text}
       </div>
@@ -190,18 +190,18 @@ function SvgBoxTabbed() {
       viewBox="0 0 398 252"
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
-      className="absolute -z-10 overflow-visible text-xs "
+      className="absolute -z-10 overflow-visible "
     >
       <g transform="translate(-250.95 -1538.9)">
         <path
           d="m333.87 1761.3-16.386 16.38h-55.543v-121.09h16.385v104.71h55.544z"
-          className="fill-white cyanish glow"
+          className="fill-white cyanish glow text-[0.75em]"
           fillRule="nonzero"
         />
 
         <path
           d="m380.54 1790.4h-53.267l36.62-36.62h162.45l-20.233 20.24h-109.18l-16.387 16.38z"
-          className="fill-magenta magentaish glow magentaish"
+          className="fill-magenta magentaish glow text-[0.75em] magentaish"
           fillRule="nonzero"
         />
 
@@ -222,13 +222,13 @@ function SvgBoxTabbed() {
 
         <path
           d="m648.24 1538.9v35.61h-5.571c0-8.28-3.368-15.8-8.794-21.24-5.444-5.43-12.963-8.8-21.247-8.8v-5.57h35.612z"
-          className="fill-magenta magentaish glow"
+          className="fill-magenta magentaish glow text-[0.75em]"
           fillRule="nonzero"
         />
 
         <path
           d="m647.93 1739.9h-333.18v-131.3l-14.786-14.79h-48.964v-33.37l21.252-21.25h308.53l67.144 67.15v133.56z"
-          className="fill-[aqua] cyanish glow opacity-60 text-sm"
+          className="fill-[aqua] cyanish glow text-[0.75em] opacity-60 text-sm"
           fillRule="nonzero"
         />
         <path
