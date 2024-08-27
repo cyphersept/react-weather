@@ -38,28 +38,31 @@ function App() {
   }, []);
 
   return (
-    <div className="py-8 m-auto w-fit max-w-[max(78rem,75vw)] h-fit">
-      <div className="rain fixed top-0 left-0 h-full w-full "></div>
-      <Search
-        onInputChange={handleInputChange}
-        onSearch={onSearch}
-        inputValue={inputValue}
-        geoData={geo}
-      ></Search>
-      <div className="results flex max-lg:flex-wrap max-lg:justify-center gap-y-8">
-        <div className="flex flex-col gap-y-8">
-          <Current
-            data={
-              data
-                ? Utils().compileInfo(data.current, data.current_units)
-                : null
-            }
-          />
-          <Hourly data={data} day={day} />
+    <>
+      {" "}
+      <div className="rain fixed top-0 left-0 h-full w-full -z-10 "></div>
+      <div className="py-8 m-auto flex flex-col justify-center w-fit max-w-[max(78rem,75vw)] h-fit min-h-screen">
+        <Search
+          onInputChange={handleInputChange}
+          onSearch={onSearch}
+          inputValue={inputValue}
+          geoData={geo}
+        ></Search>
+        <div className="results flex max-lg:flex-wrap max-lg:justify-center gap-y-8">
+          <div className="flex flex-col gap-y-8">
+            <Current
+              data={
+                data
+                  ? Utils().compileInfo(data.current, data.current_units)
+                  : null
+              }
+            />
+            <Hourly data={data} day={day} />
+          </div>
+          <Daily data={data} childClicks={handleDayClick} />
         </div>
-        <Daily data={data} childClicks={handleDayClick} />
-      </div>
-    </div>
+      </div>{" "}
+    </>
   );
 }
 
@@ -119,7 +122,7 @@ function Daily({ data, childClicks }) {
     );
   });
   return (
-    <div className="daily relative flex flex-col justify-center content-center">
+    <div className="daily relative flex flex-col justify-center">
       <h1 className="text-3xl font-bold text-center mt-4 mb-6 shadow-white text-shadow">
         WEEKLY FORECAST
       </h1>
@@ -188,7 +191,7 @@ function Hourly({ data, day }) {
   });
 
   return (
-    <div className="hourly container uppercase ml-10 text-white bg-[navy] bg-opacity-40 border-4 white box-shadow purplish min-h-80 h-[calc(100vh-36.5rem)] w-fit flex flex-col p-4">
+    <div className="hourly container uppercase ml-10 text-white bg-[navy] bg-opacity-40 border-4 white box-shadow purplish h-[clamp(16rem,calc(100vh-40em),27rem)] w-fit flex flex-col p-4">
       <h1
         className="text-3xl font-bold text-shadow shadow-white text-center mb-4"
         role="caption"
@@ -239,7 +242,7 @@ function Hour({ data }) {
 }
 function Search({ onInputChange, onSearch, inputValue, geoData }) {
   return (
-    <div className="mx-10 mb-16 min-w-96 max-w-full relative">
+    <div className="mx-10 mb-8 min-w-96 max-w-full relative">
       <div className="float-left"></div>
       <label
         htmlFor="lookupGeocode"
@@ -251,7 +254,7 @@ function Search({ onInputChange, onSearch, inputValue, geoData }) {
           : "LOADING..."}
       </label>
 
-      <div className="mt-8 relative">
+      <div className="mt-4 relative">
         <input
           type="text"
           id="lookupGeocode"
